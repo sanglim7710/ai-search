@@ -45,7 +45,7 @@
 
     <div class="container my-8">
         <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">
-            Gemini API: 실시간 검색 (Google Grounding) (v1.0)
+            Gemini API: 실시간 검색 (Google Grounding) (v1.0 Test1)
         </h1>
 
         <!-- 입력 섹션 -->
@@ -90,10 +90,13 @@
     <script>
         // API 설정 (Canvas 환경에서 __initial_auth_token이 제공되지 않으므로, API Key를 사용합니다.)
         // Canvas 환경에서 자동으로 API 키가 주입되므로, 빈 문자열로 유지합니다.
-        const API_KEY = "AIzaSyCxMBiN-HRCxchKscv0fx_QYmR9myafrOU"; 
-        const MODEL_NAME = "gemini-2.5-flash-preview-09-2025";
-        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
-
+        //const API_KEY = "AIzaSyC_K9myJoVaWxbqIuNWXZEC50NYTDo13f8"; 
+        //const MODEL_NAME = "gemini-2.5-flash-preview-09-2025";
+        //const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
+		
+		// ✅ 추가할 코드 (프록시 엔드포인트)
+		const PROXY_URL = '/api/gemini-proxy';
+		
         // DOM 요소
         const userInput = document.getElementById('userInput');
         const submitButton = document.getElementById('submitButton');
@@ -118,7 +121,7 @@
         async function fetchWithBackoff(payload, maxRetries = 5, delay = 1000) {
             for (let i = 0; i < maxRetries; i++) {
                 try {
-                    const response = await fetch(API_URL, {
+                    const response = await fetch(PROXY_URL, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
@@ -169,9 +172,8 @@
                     parts: [{ text: systemPrompt }]
                 },
                 
-                config: {
-                // 나스닥 100개의 티커와 이름 목록을 포함하기 위해 넉넉하게 설정
-                // 기본값(2048)보다 크게 늘려야 합니다.
+				// 🚀 이 부분을 'config' 대신 'generationConfig'로 수정해야 합니다.
+                generationConfig: { 
                     maxOutputTokens: 8192, 
                 },
             };
